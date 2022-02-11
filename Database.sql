@@ -1,0 +1,11 @@
+CREATE DATABASE YangForm;
+
+USE YangForm;
+
+CREATE TABLE User (
+    id INT NOT NULL PRIMARY KEY ,
+    name VARCHAR(255) NOT NULL,
+    email VARCHAR(255) NOT NULL,
+    password LONGTEXT NOT NULL
+);
+
