@@ -41,7 +41,7 @@ router.post('/register', async (req, res) => {
             res.status(200).send(results);
         }
     });
-
+    
 });
 
 router.post('/login', async (req, res) => {

@@ -5,6 +5,7 @@ const db = require('./db/index')
 require('dotenv').config();
 
 const authRouter = require('./auth/index');
+const formdataRouter = require('./formdata/index');
 
 const PORT = process.env.PORT || 3000;
 
@@ -15,7 +16,7 @@ app.get('/',(req,res)=>{
 })
 
 app.use('/auth',authRouter);
-
+app.use('/formdata',formdataRouter);
 
 
 app.listen(PORT,(req,res) => {
