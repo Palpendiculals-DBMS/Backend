@@ -1,0 +1,25 @@
+CREATE DATABASE YangForm;
+
+USE YangForm;
+
+CREATE TABLE formuser (
+    id VARCHAR(255) NOT NULL PRIMARY KEY ,
+    name VARCHAR(255) NOT NULL,
+    email VARCHAR(255) NOT NULL,
+    password LONGTEXT NOT NULL
+);
+
+CREATE TABLE formdata (
+    id VARCHAR(255) NOT NULL PRIMARY KEY ,
+    form JSON NOT NULL,
+    userid VARCHAR(255) NOT NULL REFERENCES formuser(id)
+);
+
+CREATE TABLE formsubmit (
+    id VARCHAR(255) NOT NULL PRIMARY KEY ,
+    form JSON NOT NULL,
+    formid VARCHAR(255) NOT NULL REFERENCES formuser(id)
+);
+
+ALTER TABLE formdata
+ADD COLUMN createdon INT;
