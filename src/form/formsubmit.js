@@ -59,6 +59,7 @@ router.get('/f/:id', async (req, res) => {
 
     connection.query(query, (err, results) => {
         if (err) {
+            console.log(err);
             res.status(500).send(err);
         }
         else {

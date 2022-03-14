@@ -12,6 +12,7 @@
   "author": "",
   "license": "ISC",
   "devDependencies": {
+    "prettier": "^2.5.1",
     "prisma": "^3.8.1"
   },
   "dependencies": {
