@@ -103,17 +103,22 @@ router.get("/recent", Validate, async (req, res) => {
 		});
 	}
 
-	const query = `SELECT id,title,description FROM formdata WHERE userid='${userid}' order by createdon`;
-
+	const query = `SELECT id,title,description,createdon FROM formdata WHERE userid='${userid}' order by createdon`;
+	let data;
 	connection.query(query, (err, results) => {
 		if (err) {
 			console.log(err);
 			res.status(500).send(err);
 		} else
-			res.status(200).send({
-				data: results.rows,
-				status: 1,
+			data = results.rows.map((item) => {
+				return {
+					...item,
+				};
 			});
+		res.status(200).send({
+			data: data,
+			status: 1,
+		});
 	});
 });
 
