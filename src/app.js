@@ -2,19 +2,20 @@ const express = require("express");
 const app = express();
 app.use(express.json());
 require("dotenv").config();
-var morgan = require("morgan");
 
+var morgan = require("morgan");
 const db = require("./db/index");
 const cors = require("cors");
-
+require("./auth/auth");
 app.use(cors());
 app.use(morgan("tiny"));
 app.use(function (req, res, next) {
 	setTimeout(next, 1000);
 });
-const authRouter = require("./auth/index");
-const formdataRouter = require("./form/formdata");
-const formsubmitRouter = require("./form/formsubmit");
+const authRouter = require("./routes/auth");
+const formdataRouter = require("./routes/data");
+const formsubmitRouter = require("./routes/submit");
+const FormAnalytics = require("./routes/analytics");
 
 const PORT = process.env.PORT || 4000;
 
@@ -31,6 +32,7 @@ app.get("/", (req, res) => {
 app.use("/auth", authRouter);
 app.use("/formdata", formdataRouter);
 app.use("/formsubmit", formsubmitRouter);
+app.use("/analytics", FormAnalytics);
 
 app.listen(PORT, (req, res) => {
 	console.log(`Listening index.js on Port ${PORT}`);

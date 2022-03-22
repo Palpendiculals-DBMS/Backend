@@ -2,6 +2,7 @@ const router = require("express").Router();
 const uniqid = require("uniqid");
 const { Validate } = require("../functions/middleware");
 const connection = require("../db");
+const passport = require("passport");
 
 // Display all Form Submissions
 router.get("/", async (req, res) => {
@@ -16,34 +17,38 @@ router.get("/", async (req, res) => {
 });
 
 // Insert new form submit
-router.post("/add", Validate, async (req, res) => {
-	const query =
-		"INSERT INTO formsubmit (id, form, formid, userid) VALUES ($1,$2,$3,$4)";
+router.post(
+	"/add",
+	passport.authenticate("jwt", { session: false }),
+	async (req, res) => {
+		const query =
+			"INSERT INTO formsubmit (id, form, formid, userid) VALUES ($1,$2,$3,$4)";
 
-	let id = uniqid();
-	const userid = req.authData.id;
-	const { form, formid } = req.body;
+		let id = uniqid();
+		const userid = req.user.id;
+		const { form, formid } = req.body;
 
-	if (!id || !form || !userid || !formid) {
-		res.status(400).send({
-			error: "Missing Parameters",
-		});
-		return;
-	}
-
-	const values = [id, JSON.stringify(form), formid, userid];
-
-	connection.query(query, values, (err, results) => {
-		if (err) {
-			res.status(500).send(err);
-		} else {
-			res.status(200).send({
-				status: 1,
-				message: "Form added successfully",
+		if (!id || !form || !userid || !formid) {
+			res.status(400).send({
+				error: "Missing Parameters",
 			});
+			return;
 		}
-	});
-});
+
+		const values = [id, JSON.stringify(form), formid, userid];
+
+		connection.query(query, values, (err, results) => {
+			if (err) {
+				res.status(500).send(err);
+			} else {
+				res.status(200).send({
+					status: 1,
+					message: "Form added successfully",
+				});
+			}
+		});
+	}
+);
 
 // Get Form By Id
 router.get("/f/:id", async (req, res) => {
