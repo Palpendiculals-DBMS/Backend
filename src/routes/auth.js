@@ -5,6 +5,7 @@ const utils = require("../functions/utils");
 const cors = require("cors");
 const { AvatarGenerator } = require("random-avatar-generator");
 const passport = require("passport");
+const uuid = require("uuid");
 
 router.use(cors());
 
@@ -98,12 +99,46 @@ router.post(
 	}
 );
 
+router.get(
+	"/token",
+	passport.authenticate("jwt", { session: false }),
+	async (req, res) => {
+		console.log("token", req.user);
+		const query = "SELECT token from formuser WHERE id = $1";
+		const values = [req.user.id];
+		connection.query(query, values, (err, results) => {
+			if (err) {
+				res.status(500).send(err);
+			} else {
+				res.status(200).send(results.rows[0]);
+			}
+		});
+	}
+);
+
+router.post(
+	"/token",
+	passport.authenticate("jwt", { session: false }),
+	async (req, res) => {
+		const query = "UPDATE formuser SET token = $1 WHERE id = $2";
+		const new_token = uuid.v4().replace(/-/g, "");
+		const values = [new_token, req.user.id];
+
+		connection.query(query, values, (err, results) => {
+			if (err) {
+				res.status(500).send(err);
+			} else {
+				res.status(200).send(results);
+			}
+		});
+	}
+);
+
 router.post("/avatar", async (req, res) => {
 	const avatar = new AvatarGenerator();
 
 	const image = avatar.generateRandomAvatar();
 	console.log(image);
-	// console.log(url);
 
 	res.status(200).json({
 		image: image,

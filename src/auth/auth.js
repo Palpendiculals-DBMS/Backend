@@ -110,8 +110,8 @@ opts.secretOrKey = process.env.TOKEN_SECRET;
 
 passport.use(
 	new JWTstrategy(opts, async function (jwt_payload, done) {
+		console.log(jwt_payload);
 		const id = jwt_payload.id;
-		const email = jwt_payload.email;
 		try {
 			const query = `SELECT * FROM formuser WHERE id = $1`;
 			const res = await connection.query(query, [id]);

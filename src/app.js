@@ -16,6 +16,7 @@ const authRouter = require("./routes/auth");
 const formdataRouter = require("./routes/data");
 const formsubmitRouter = require("./routes/submit");
 const FormAnalytics = require("./routes/analytics");
+const FormAPI = require("./routes/api");
 
 const PORT = process.env.PORT || 4000;
 
@@ -33,6 +34,7 @@ app.use("/auth", authRouter);
 app.use("/formdata", formdataRouter);
 app.use("/formsubmit", formsubmitRouter);
 app.use("/analytics", FormAnalytics);
+app.use("/api", FormAPI);
 
 app.listen(PORT, (req, res) => {
 	console.log(`Listening index.js on Port ${PORT}`);
