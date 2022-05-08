@@ -11,9 +11,9 @@ router.get(
 
 		const q_id = req.params.id;
 
-		const q_1 = `SELECT formsubmit.form as submissions,f.email, f.name, f2.form as form from formsubmit RIGHT JOIN formuser f on formsubmit.userid = f.id RIGHT JOIN formdata f2 on formsubmit.formid = f2.id where formid='${q_id}' and f2.userid='${user.id}';`;
+		const q_1 = `SELECT formsubmit.form as submissions, f2.form as form from formsubmit RIGHT JOIN formdata f2 on formsubmit.formid = f2.id where formid='${q_id}'`;
 
-		const q_2 = `SELECT form, title, description from formdata where formdata.userid = '${user.id}' and formdata.id = '${q_id}';`;
+		const q_2 = `SELECT form, title, description from formdata where formdata.id = '${q_id}';`;
 
 		try {
 			let submissions = await connection.query(q_1);

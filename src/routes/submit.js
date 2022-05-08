@@ -22,6 +22,7 @@ router.post("/add", async (req, res) => {
 
 	let id = uniqid();
 	const { form, formid } = req.body;
+	console.log(id, form, formid);
 
 	if (!id || !form || !formid) {
 		res.status(400).send({
