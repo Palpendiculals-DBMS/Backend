@@ -8,6 +8,7 @@ const uniqid = require("uniqid");
 const { AvatarGenerator } = require("random-avatar-generator");
 const avatar = new AvatarGenerator();
 const jwt = require("jsonwebtoken");
+const uuid = require("uuid");
 
 passport.use(
 	"signup",
@@ -35,8 +36,9 @@ passport.use(
 						expiresIn: "365d",
 					}
 				);
-				const query = `INSERT INTO formuser (id, name, email, password, avatar) VALUES ($1, $2, $3, $4, $5) RETURNING *`;
-				const values = [id, name, email, hashedPassword, avatarUrl];
+				const new_token = uuid.v4().replace(/-/g, "");
+				const query = `INSERT INTO formuser (id, name, email, password, avatar,token) VALUES ($1, $2, $3, $4, $5,$6) RETURNING *`;
+				const values = [id, name, email, hashedPassword, avatarUrl, new_token];
 				const res = await connection.query(query, values);
 
 				return done(null, {
